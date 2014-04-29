@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Mypackage_Mymodule>
+      <version>0.1.0</version>
+    </Mypackage_Mymodule>
+  </modules>
+  <frontend>
+    <routers>
+      <mymodule>
+        <use>standard</use>
+          <args>
+            <module>Mypackage_Mymodule</module>
+            <frontName>mymodule</frontName>
+          </args>
+      </mymodule>
+    </routers>
+		<layout>
+		  <updates>
+			<mymodule>
+			  <file>mymodule.xml</file>
+			</mymodule>
+		  </updates>
+		</layout>
+  </frontend>
+  <global>
+    <helpers>
+      <mymodule>
+        <class>Mypackage_Mymodule_Helper</class>
+      </mymodule>
+    </helpers>
+	<blocks>
+	  <mymodule>
+		<class>Mypackage_Mymodule_Block</class>
+	  </mymodule>
+	</blocks>
+  </global>
+  <admin>
+	<routers>
+	  <mymodule>
+	    <use>admin</use>
+		<args>
+		  <module>Mypackage_Mymodule</module>
+		  <frontName>mymodule</frontName>
+		</args>
+	  </mymodule>
+	</routers>
+  </admin>
+  <adminhtml>
+	<menu>
+	  <mymodule module="mymodule">
+		<title>Mymodule</title>
+		<sort_order>100</sort_order>
+		<children>
+		  <mymodulebackend module="mymodule">
+			<title>Backend Page Title</title>
+			<sort_order>0</sort_order>
+			<action>mymodule/adminhtml_mymodulebackend</action>
+		  </mymodulebackend>
+		</children>
+	  </mymodule>
+	</menu>
+	<acl>
+	  <resources>
+		<all>
+		  <title>Allow Everything</title>
+		</all>
+		<admin>
+		  <children>
+			<mymodule translate="title" module="mymodule">
+			  <title>Mymodule</title>
+			  <sort_order>1000</sort_order>
+			  <children>
+		  <mymodulebackend translate="title">
+			<title>Backend Page Title</title>
+		  </mymodulebackend>
+			  </children>
+			</mymodule>
+		  </children>
+		</admin>
+	  </resources>
+	</acl>
+	<layout>
+	  <updates>
+		<mymodule>
+		  <file>mymodule.xml</file>
+		</mymodule>
+	  </updates>
+	</layout>
+  </adminhtml>
+</config> 

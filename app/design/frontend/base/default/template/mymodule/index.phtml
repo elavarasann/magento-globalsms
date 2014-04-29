@@ -1,0 +1,27 @@
+<?php	   
+     $orders = Mage::getModel('sales/order')->getCollection()
+     ->addAttributeToFilter('customer_email', 'ela.youngking@gmail.com');
+    
+foreach ($orders as $order) {
+    $total = $order->getGrandTotal();
+     $sum+= $total;
+    
+}
+
+$collections = Mage::getModel('sales/order')->getCollection()
+     ->addAttributeToFilter('customer_email', 'selvakannann@gmail.com');
+    
+foreach ($collections as $collection) {
+    $total_amnt = $collection->getGrandTotal();
+     $final+= $total_amnt;
+    
+}
+?>
+
+<h1>Life time sales amount of customers:</h1>
+<p><b>Ela.youngking@gmail.com  : </b> Rs.<?php echo $sum ;?> </p>
+<p><b>Selvakannann@gmail.com  : </b> Rs.<?php echo $final ;?> </p>
+   
+		
+		
+		
