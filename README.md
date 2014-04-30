@@ -1,4 +1,4 @@
-Mgento sms gateway
+Magento sms gateway
 =========
 
 * This module developed for who want to implement sms gateway for their store.
