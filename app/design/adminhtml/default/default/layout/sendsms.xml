@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <sendsms_adminhtml_sendsms_index>
+        <reference name="content">
+            <block type="sendsms/adminhtml_sendsms" name="sendsms" />
+        </reference>
+    </sendsms_adminhtml_sendsms_index>
+</layout>

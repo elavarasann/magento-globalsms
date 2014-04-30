@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category   Ela
+ * @package    Ela_Sendsms
+ * @author     24x
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <modules>
+        <Ela_Sendsms>
+            <version>1.0.0</version>
+        </Ela_Sendsms>
+    </modules>
+    <admin>
+        <routers>
+			<sendsms>
+				<use>admin</use>
+				<args>
+					<module>Ela_Sendsms</module>
+					<frontName>sendsms</frontName>
+				</args>
+			</sendsms>
+        </routers>
+    </admin>
+    <adminhtml>
+		<translate>
+			<modules>
+				<ela_sendsms>
+					<files>
+						<default>Ela_Sendsms.csv</default>
+					</files>
+				</ela_sendsms>
+			</modules>
+        </translate>
+		<menu>
+			<sendsms translate="title" module="sendsms">
+				<title>Send sms</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<!-- <credits translate="title" module="sendsms">
+						<title>Buy Credits/Pricing</title>
+						<sort_order>0</sort_order>
+						<action>adminhtml/system_config/edit/section/buycredits</action>
+					</credits>-->
+					<items translate="title" module="sendsms">
+						<title>Manage Text Messages</title>
+						<sort_order>5</sort_order>
+						<action>sendsms/adminhtml_sendsms</action>
+					</items>
+					<manual translate="title" module="sendsms">
+						<title>Send Manual Message(s)</title>
+						<sort_order>10</sort_order>
+						<action>sendsms/adminhtml_sendsms/new</action>
+					</manual>
+					<settings translate="title" module="sendsms">
+						<title>Settings</title>
+						<sort_order>15</sort_order>
+						<action>adminhtml/system_config/edit/section/sendsms</action>
+					</settings>
+				</children>
+			</sendsms>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<sendsms translate="title" module="sendsms">
+							<title>Send Sms</title>
+							<sort_order>71</sort_order>               
+							<children>
+								<!-- <credits translate="title" module="sendsms">
+									<title>Buy Credits/Pricing</title>
+									<sort_order>0</sort_order>
+								</credits>-->
+								<items translate="title" module="sendsms">
+									<title>Manage Text Messages</title>
+									<sort_order>5</sort_order>
+								</items>
+								<manual translate="title" module="sendsms">
+									<title>Send Manual Message(s)</title>
+									<sort_order>10</sort_order>
+								</manual>
+								<settings translate="title" module="sendsms">
+									<title>Settings</title>
+									<sort_order>15</sort_order>
+								</settings>
+							</children>
+						</sendsms>
+						<system>
+							<children>
+								<config>
+									<children>
+										<sendsms translate="title" module="sendsms">
+											<title>Sms Notifications</title>
+											<sort_order>50</sort_order>
+										</sendsms>
+										<!-- <buycredits translate="title" module="sendsms">
+											<title>Buy Credits/Pricing</title>
+											<sort_order>55</sort_order>
+										</buycredits>-->
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<sendsms>
+					<file>sendsms.xml</file>
+				</sendsms>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <sendsms>
+                <class>Ela_Sendsms_Model</class>
+                <resourceModel>sendsms_mysql4</resourceModel>
+            </sendsms>
+            <sendsms_mysql4>
+                <class>Ela_Sendsms_Model_Mysql4</class>
+                <entities>
+                    <sendsms>
+                        <table>sendsms</table>
+                    </sendsms>
+                </entities>
+            </sendsms_mysql4>
+        </models>
+        <resources>
+            <sendsms_setup>
+                <setup>
+                    <module>Ela_Sendsms</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </sendsms_setup>
+            <sendsms_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </sendsms_write>
+            <sendsms_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </sendsms_read>
+        </resources>
+        <blocks>
+            <sendsms>
+                <class>Ela_Sendsms_Block</class>
+            </sendsms>
+        </blocks>
+        <helpers>
+            <sendsms>
+                <class>Ela_Sendsms_Helper</class>
+            </sendsms>
+        </helpers>
+		<events>
+			<checkout_onepage_controller_success_action>
+                <observers>
+                    <Ela_Sendsms_Created>
+						<type>singleton</type>
+                        <class>Ela_Sendsms_Model_Observer</class>
+                        <method>sendSmsOnOrderCreated</method>
+                    </Ela_Sendsms_Created>
+                </observers>
+            </checkout_onepage_controller_success_action>
+			<sales_order_save_after>
+				<observers>
+                    <Ela_Sendsms_Order_Hold>
+						<type>singleton</type>
+                        <class>Ela_Sendsms_Model_Observer</class>
+                        <method>sendSmsOnOrderHold</method>
+                    </Ela_Sendsms_Order_Hold>
+					<Ela_Sendsms_Order_Unhold>
+						<type>singleton</type>
+                        <class>Ela_Sendsms_Model_Observer</class>
+                        <method>sendSmsOnOrderUnhold</method>
+                    </Ela_Sendsms_Order_Unhold>
+					<Ela_Sendsms_Order_Canceled>
+						<type>singleton</type>
+                        <class>Ela_Sendsms_Model_Observer</class>
+                        <method>sendSmsOnOrderCanceled</method>
+                    </Ela_Sendsms_Order_Canceled>
+                </observers>
+			</sales_order_save_after>
+			<sales_order_shipment_save_after>
+                <observers>
+                    <Ela_Sendsms_Shipment_Created>
+						<type>singleton</type>
+                        <class>Ela_Sendsms_Model_Observer</class>
+                        <method>sendSmsOnShipmentCreated</method>
+                    </Ela_Sendsms_Shipment_Created>
+                </observers>
+            </sales_order_shipment_save_after>
+		</events>
+    </global>
+	<default>
+		<sendsms>
+			<orders>
+				<enabled>0</enabled>
+				<sender>Magento</sender>
+				<message>Hello {{firstname}}. Your order has been received. Thank you for your purchase!</message>
+				<notify>0</notify>
+			</orders>
+			<order_hold>
+				<enabled>0</enabled>
+				<sender>Magento</sender>
+				<message>Hello {{firstname}}. Your order {{order_id}} has been placed on hold.</message>
+			</order_hold>
+			<order_unhold>
+				<enabled>0</enabled>
+				<sender>Magento</sender>
+				<message>Hello {{firstname}}. Your order {{order_id}} has been released from holding status.</message>
+			</order_unhold>
+			<order_canceled>
+				<enabled>0</enabled>
+				<sender>Magento</sender>
+				<message>Hello {{firstname}}. Your order {{order_id}} has been canceled.</message>
+			</order_canceled>
+			<shipments>
+				<enabled>0</enabled>
+				<sender>Magento</sender>
+				<message>Hello {{firstname}}. Your order ({{order_id}}) has been shipped. Thank you for buying from us!</message>
+			</shipments>
+		</sendsms>
+	</default>
+</config>
